@@ -1,0 +1,17 @@
+.venv/
+venv/
+env/
+
+.DS_Store
+
+__pycache__/
+*.py[cod]
+*.pyo
+
+mlruns/
+artifacts/
+data/raw/
+data/processed/
+
+!src/serving/model/
+!src/serving/model/**
