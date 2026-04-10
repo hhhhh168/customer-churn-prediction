@@ -34,7 +34,7 @@ A full machine-learning solution for predicting customer churn in a telecom sett
 
 ```bash
 # Train the model
-python scripts/run_pipeline.py --input data/raw/Telco-Customer-Churn.csv --target Churn
+python scripts/run_pipeline.py --input data/raw/Customer-Churn.csv --target Churn
 
 # Run the API
 python -m uvicorn src.app.main:app --host 0.0.0.0 --port 8000

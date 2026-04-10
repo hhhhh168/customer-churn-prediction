@@ -5,7 +5,7 @@ import optuna
 
 print("=== Phase 2: Modeling with XGBoost ===")
 
-df = pd.read_csv("data/processed/telco_churn_processed.csv")
+df = pd.read_csv("data/processed/customer_churn_processed.csv")
 
 if df["Churn"].dtype == "object":
     df["Churn"] = df["Churn"].str.strip().map({"No": 0, "Yes": 1})

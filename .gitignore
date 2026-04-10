@@ -4,6 +4,9 @@ env/
 
 .DS_Store
 
+# Local-only Claude Code guidance — never publish
+CLAUDE.md
+
 __pycache__/
 *.py[cod]
 *.pyo

@@ -7,7 +7,7 @@ from data.load_data import load_data
 from data.preprocess import preprocess_data
 from features.build_features import build_features
 
-DATA_PATH = "data/raw/Telco-Customer-Churn.csv"
+DATA_PATH = "data/raw/Customer-Churn.csv"
 TARGET_COL = "Churn"
 
 

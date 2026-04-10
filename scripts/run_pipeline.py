@@ -19,7 +19,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.data.load_data import load_data
 from src.data.preprocess import preprocess_data
 from src.features.build_features import build_features
-from src.utils.validate_data import validate_telco_data
+from src.utils.validate_data import validate_data
 
 
 def main(args):
@@ -39,7 +39,7 @@ def main(args):
         print(f"Data loaded: {df.shape[0]} rows, {df.shape[1]} columns")
 
         print("Validating data quality...")
-        is_valid, failed = validate_telco_data(df)
+        is_valid, failed = validate_data(df)
         mlflow.log_metric("data_quality_pass", int(is_valid))
 
         if not is_valid:
@@ -52,7 +52,7 @@ def main(args):
         print("Preprocessing data...")
         df = preprocess_data(df)
 
-        processed_path = os.path.join(project_root, "data", "processed", "telco_churn_processed.csv")
+        processed_path = os.path.join(project_root, "data", "processed", "customer_churn_processed.csv")
         os.makedirs(os.path.dirname(processed_path), exist_ok=True)
         df.to_csv(processed_path, index=False)
         print(f"Processed dataset saved | Shape: {df.shape}")
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     p.add_argument("--target", type=str, default="Churn")
     p.add_argument("--threshold", type=float, default=0.35)
     p.add_argument("--test_size", type=float, default=0.2)
-    p.add_argument("--experiment", type=str, default="Telco Churn")
+    p.add_argument("--experiment", type=str, default="Customer Churn")
     p.add_argument("--mlflow_uri", type=str, default=None)
     args = p.parse_args()
     main(args)

@@ -3,7 +3,7 @@ import great_expectations as ge
 from typing import Tuple, List
 
 
-def validate_telco_data(df) -> Tuple[bool, List[str]]:
+def validate_data(df) -> Tuple[bool, List[str]]:
     ge_df = ge.dataset.PandasDataset(df)
 
     # Schema validation
