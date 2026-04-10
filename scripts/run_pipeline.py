@@ -33,7 +33,6 @@ def main(args):
         mlflow.log_param("threshold", args.threshold)
         mlflow.log_param("test_size", args.test_size)
 
-        # Stage 1: Load and validate
         print("Loading data...")
         df = load_data(args.input)
         print(f"Data loaded: {df.shape[0]} rows, {df.shape[1]} columns")
@@ -48,7 +47,6 @@ def main(args):
             raise ValueError(f"Data quality check failed: {failed}")
         print("Data validation passed.")
 
-        # Stage 2: Preprocess
         print("Preprocessing data...")
         df = preprocess_data(df)
 
@@ -57,7 +55,6 @@ def main(args):
         df.to_csv(processed_path, index=False)
         print(f"Processed dataset saved | Shape: {df.shape}")
 
-        # Stage 3: Feature engineering
         print("Building features...")
         target = args.target
         if target not in df.columns:
@@ -68,7 +65,7 @@ def main(args):
             df_enc[c] = df_enc[c].astype(int)
         print(f"Feature engineering completed: {df_enc.shape[1]} features")
 
-        # Save feature metadata for serving consistency
+        # serving needs the exact training feature order
         import json, joblib
         artifacts_dir = os.path.join(project_root, "artifacts")
         os.makedirs(artifacts_dir, exist_ok=True)
@@ -84,7 +81,6 @@ def main(args):
         mlflow.log_artifact(os.path.join(artifacts_dir, "preprocessing.pkl"))
         print(f"Saved {len(feature_cols)} feature columns for serving")
 
-        # Stage 4: Train/test split
         X = df_enc.drop(columns=[target])
         y = df_enc[target]
         X_train, X_test, y_train, y_test = train_test_split(
@@ -94,7 +90,6 @@ def main(args):
 
         scale_pos_weight = (y_train == 0).sum() / (y_train == 1).sum()
 
-        # Stage 5: Train XGBoost
         print("Training XGBoost model...")
         model = XGBClassifier(
             n_estimators=301,
@@ -114,7 +109,6 @@ def main(args):
         mlflow.log_metric("train_time", train_time)
         print(f"Model trained in {train_time:.2f}s")
 
-        # Stage 6: Evaluate
         t1 = time.time()
         proba = model.predict_proba(X_test)[:, 1]
         y_pred = (proba >= args.threshold).astype(int)
@@ -134,7 +128,6 @@ def main(args):
         print(f"Precision: {precision:.3f} | Recall: {recall:.3f}")
         print(f"F1: {f1:.3f} | ROC AUC: {roc_auc:.3f}")
 
-        # Stage 7: Save model
         mlflow.sklearn.log_model(model, artifact_path="model")
         print("Model saved to MLflow")
 

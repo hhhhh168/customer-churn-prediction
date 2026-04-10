@@ -6,7 +6,6 @@ from typing import Tuple, List
 def validate_data(df) -> Tuple[bool, List[str]]:
     ge_df = ge.dataset.PandasDataset(df)
 
-    # Schema validation
     ge_df.expect_column_to_exist("customerID")
     ge_df.expect_column_values_to_not_be_null("customerID")
     ge_df.expect_column_to_exist("gender")
@@ -19,7 +18,6 @@ def validate_data(df) -> Tuple[bool, List[str]]:
     ge_df.expect_column_to_exist("MonthlyCharges")
     ge_df.expect_column_to_exist("TotalCharges")
 
-    # Value constraints
     ge_df.expect_column_values_to_be_in_set("gender", ["Male", "Female"])
     ge_df.expect_column_values_to_be_in_set("Partner", ["Yes", "No"])
     ge_df.expect_column_values_to_be_in_set("Dependents", ["Yes", "No"])
@@ -27,7 +25,6 @@ def validate_data(df) -> Tuple[bool, List[str]]:
     ge_df.expect_column_values_to_be_in_set("Contract", ["Month-to-month", "One year", "Two year"])
     ge_df.expect_column_values_to_be_in_set("InternetService", ["DSL", "Fiber optic", "No"])
 
-    # Numeric range checks
     ge_df.expect_column_values_to_be_between("tenure", min_value=0, max_value=120)
     ge_df.expect_column_values_to_be_between("MonthlyCharges", min_value=0, max_value=200)
     ge_df.expect_column_values_to_not_be_null("tenure")
@@ -35,7 +32,7 @@ def validate_data(df) -> Tuple[bool, List[str]]:
 
     ge_df["TotalCharges"] = pd.to_numeric(ge_df["TotalCharges"], errors="coerce")
 
-    # TotalCharges should generally be >= MonthlyCharges
+    # TotalCharges is usually >= MonthlyCharges except for brand-new accounts; allow 5% slack
     ge_df.expect_column_pair_values_A_to_be_greater_than_B(
         column_A="TotalCharges",
         column_B="MonthlyCharges",
