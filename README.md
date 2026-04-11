@@ -1,6 +1,16 @@
 # Customer Churn Prediction
 
-XGBoost churn model for telecom customers, served behind a FastAPI + Gradio app on AWS ECS Fargate. Built as a personal project to get an end-to-end ML system into production rather than stop at a notebook.
+XGBoost churn model for telecom customers, served behind a FastAPI + Gradio app on AWS ECS Fargate. Built as a personal project to get an end-to-end ML system into production rather than just a notebook.
+
+## Analysis
+
+The modeling work is written up as a case study in [`notebooks/02_model_analysis.ipynb`](notebooks/02_model_analysis.ipynb):
+
+- Three-model comparison (logistic regression, random forest, XGBoost) with 5-fold stratified cross-validation
+- Calibration curve against observed frequencies
+- SHAP global feature importance plus individual explanations for the highest- and lowest-risk customers in the test set
+- Business-grounded threshold tuning: instead of picking 0.5 or 0.35 by intuition, the classification threshold is chosen to maximize expected net savings under a simple cost/benefit model ($50 retention offer, ~$1,550 lifetime value loss per churn, 40% save rate)
+- Results, recommendations for the retention team, and limitations
 
 ## Stack
 
