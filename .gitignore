@@ -6,6 +6,8 @@ env/
 
 # Local-only Claude Code guidance — never publish
 CLAUDE.md
+customer-churn-architecture.md
+customer-churn-roadmap.md
 
 __pycache__/
 *.py[cod]
