@@ -4,13 +4,22 @@ XGBoost churn model for telecom customers, served behind a FastAPI + Gradio app 
 
 ## Analysis
 
-The modeling work is written up as a case study in [`notebooks/02_model_analysis.ipynb`](notebooks/02_model_analysis.ipynb):
+Two analytical notebooks, written up as case studies rather than scratchpads:
+
+**[`notebooks/02_model_analysis.ipynb`](notebooks/02_model_analysis.ipynb)** — modeling:
 
 - Three-model comparison (logistic regression, random forest, XGBoost) with 5-fold stratified cross-validation
 - Calibration curve against observed frequencies
 - SHAP global feature importance plus individual explanations for the highest- and lowest-risk customers in the test set
 - Business-grounded threshold tuning: instead of picking 0.5 or 0.35 by intuition, the classification threshold is chosen to maximize expected net savings under a simple cost/benefit model ($50 retention offer, ~$1,550 lifetime value loss per churn, 40% save rate)
 - Results, recommendations for the retention team, and limitations
+
+**[`notebooks/01_business_analysis.ipynb`](notebooks/01_business_analysis.ipynb)** — business framing:
+
+- Segmentation by contract, tenure bucket, payment method, and service bundle, each tied to annual revenue-at-risk in dollars
+- Unified revenue-at-risk ranking across segmentation axes
+- Ranked list of the top 100 currently-active customers the retention team should call first, scored with honest out-of-fold XGBoost predictions
+- Retention action recommendations mapped to the segments that surface from the analysis
 
 ## Stack
 
@@ -69,6 +78,6 @@ Returns `{"prediction": "Likely to churn"}` or `{"prediction": "Not likely to ch
 
 ## Notes
 
-- The classification threshold is 0.35, picked to favor recall over precision since missing a churner is generally more expensive than a false positive in this domain.
+- The classification threshold is tuned via cost/benefit analysis rather than picked by intuition — see `notebooks/02_model_analysis.ipynb` for the derivation. The serving code currently ships a fixed threshold as a starting point; the notebook is the source of truth for how it should be chosen.
 - Class imbalance is handled with `scale_pos_weight` in XGBoost rather than resampling.
 - Training and serving use the same feature transformations — see `src/features/build_features.py` and `src/serving/inference.py`. If you change one, change the other.
