@@ -21,7 +21,7 @@ Two analytical notebooks, written up as case studies rather than scratchpads:
 - Ranked list of the top 100 currently-active customers the retention team should call first, scored with honest out-of-fold XGBoost predictions
 - Retention action recommendations mapped to the segments that surface from the analysis
 
-**[Tableau Public dashboard](https://public.tableau.com/views/CustomerChurnPrediction_1/Churnratebycontracttype?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)** — interactive version of the business analysis, built for stakeholder consumption. Segmentation charts cross-filter on click, and a budget parameter lets you adjust how many at-risk customers the retention team can reach.
+**[Tableau Public dashboard](https://public.tableau.com/views/CustomerChurnPrediction_1/Dashboard?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)** — interactive version of the business analysis, built for stakeholder consumption. Segmentation charts cross-filter on click, and a budget parameter lets you adjust how many at-risk customers the retention team can reach.
 
 ## Stack
 
