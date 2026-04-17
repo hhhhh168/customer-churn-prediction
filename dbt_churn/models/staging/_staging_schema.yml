@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: Cleaned customer demographics. In production, sourced from the CRM system.
+    columns:
+      - name: customer_id
+        description: Unique customer identifier
+        tests:
+          - unique
+          - not_null
+      - name: gender
+        tests:
+          - accepted_values:
+              values: ['male', 'female']
+      - name: tenure_months
+        description: Number of months the customer has been with the company
+
+  - name: stg_services
+    description: Service subscriptions per customer. In production, sourced from the provisioning system.
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: internet_service
+        tests:
+          - accepted_values:
+              values: ['dsl', 'fiber optic', 'no']
+
+  - name: stg_billing
+    description: Contract and payment details. In production, sourced from the billing system.
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: contract_type
+        tests:
+          - accepted_values:
+              values: ['month-to-month', 'one year', 'two year']
+      - name: monthly_charges
+        tests:
+          - not_null
+
+  - name: stg_churn_labels
+    description: Churn outcome flag. In production, derived from account cancellation events.
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: is_churned
+        tests:
+          - accepted_values:
+              values: [0, 1]

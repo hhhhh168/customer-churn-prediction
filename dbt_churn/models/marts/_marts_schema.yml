@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: mart_churn_analytics
+    description: >
+      Analytics-ready table for model training and dashboards. Adds
+      business classifications (addon_bucket, risk_segment) on top of
+      the joined feature set. The risk_segment logic codifies the
+      patterns found in the business analysis notebook: month-to-month
+      fiber customers with no add-ons in their first 6 months are the
+      highest-risk cohort.
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: risk_segment
+        tests:
+          - accepted_values:
+              values: ['critical', 'high', 'medium', 'low']
+      - name: addon_bucket
+        tests:
+          - accepted_values:
+              values: ['0', '1-2', '3-4', '5-6']
+      - name: monthly_charges
+        tests:
+          - not_null
+      - name: is_churned
+        tests:
+          - not_null

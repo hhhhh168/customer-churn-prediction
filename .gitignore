@@ -20,3 +20,9 @@ data/processed/
 
 !src/serving/model/
 !src/serving/model/**
+
+# dbt
+dbt_churn/target/
+dbt_churn/logs/
+dbt_churn/dbt_packages/
+profiles.yml

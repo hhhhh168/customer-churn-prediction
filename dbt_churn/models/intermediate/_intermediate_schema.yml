@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: int_customer_features
+    description: >
+      Joins customer demographics, services, billing, and churn labels
+      into a single feature table with derived fields. This is the
+      transformation layer — all business logic for tenure bucketing,
+      addon counting, and revenue calculation happens here.
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: tenure_bucket
+        tests:
+          - accepted_values:
+              values: ['0-6 mo', '7-12 mo', '13-24 mo', '25-48 mo', '49+ mo']
+      - name: addon_count
+        description: Number of add-on services (0-6)
