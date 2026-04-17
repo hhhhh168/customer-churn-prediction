@@ -4,9 +4,16 @@ XGBoost churn model for subscription-service customers, served behind a FastAPI 
 
 ## Analysis
 
-Two analytical notebooks, written up as case studies rather than scratchpads:
+Three notebooks, written up as case studies rather than scratchpads. They walk through the descriptive → predictive → prescriptive decision stack a retention team would actually use.
 
-**[`notebooks/02_model_analysis.ipynb`](notebooks/02_model_analysis.ipynb)** — modeling:
+**[`notebooks/01_business_analysis.ipynb`](notebooks/01_business_analysis.ipynb)** — descriptive:
+
+- Segmentation by contract, tenure bucket, payment method, and service bundle, each tied to annual revenue-at-risk in dollars
+- Unified revenue-at-risk ranking across segmentation axes
+- Ranked list of the top 100 currently-active customers the retention team should call first, scored with honest out-of-fold XGBoost predictions
+- Retention action recommendations mapped to the segments that surface from the analysis
+
+**[`notebooks/02_model_analysis.ipynb`](notebooks/02_model_analysis.ipynb)** — predictive:
 
 - Three-model comparison (logistic regression, random forest, XGBoost) with 5-fold stratified cross-validation
 - Calibration curve against observed frequencies
@@ -14,12 +21,12 @@ Two analytical notebooks, written up as case studies rather than scratchpads:
 - Business-grounded threshold tuning: instead of picking 0.5 or 0.35 by intuition, the classification threshold is chosen to maximize expected net savings under a simple cost/benefit model ($50 retention offer, ~$1,550 lifetime value loss per churn, 40% save rate)
 - Results, recommendations for the retention team, and limitations
 
-**[`notebooks/01_business_analysis.ipynb`](notebooks/01_business_analysis.ipynb)** — business framing:
+**[`notebooks/03_uplift_modeling.ipynb`](notebooks/03_uplift_modeling.ipynb)** — prescriptive:
 
-- Segmentation by contract, tenure bucket, payment method, and service bundle, each tied to annual revenue-at-risk in dollars
-- Unified revenue-at-risk ranking across segmentation axes
-- Ranked list of the top 100 currently-active customers the retention team should call first, scored with honest out-of-fold XGBoost predictions
-- Retention action recommendations mapped to the segments that surface from the analysis
+- Frames retention as a treatment-effect problem: who's actually *persuadable* by an offer, not just who's most at risk
+- Dataset has no treatment column, so the notebook is explicit about being a methodology demonstration with a synthesized treatment effect on top of the observed data. See the first markdown cell and `docs/data_card.md` for the honest framing
+- T-learner and X-learner uplift models via `causalml`, evaluated with decile analysis, Qini curve, and AUUC against risk-based and random targeting baselines
+- Budget-constrained comparison: given a fixed-size retention campaign, how much better is uplift targeting than ranking by churn risk?
 
 **[Tableau Public dashboard](https://public.tableau.com/views/CustomerChurnPrediction_1/Dashboard?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)** — interactive version of the business analysis, built for stakeholder consumption. Segmentation charts cross-filter on click, and a budget parameter lets you adjust how many at-risk customers the retention team can reach.
 
