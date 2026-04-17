@@ -5,7 +5,7 @@ from src.serving.inference import predict
 
 app = FastAPI(
     title="Customer Churn Prediction API",
-    description="ML API for predicting customer churn in telecom industry",
+    description="ML API for predicting customer churn in subscription services",
     version="1.0.0"
 )
 

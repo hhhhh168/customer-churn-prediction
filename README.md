@@ -1,6 +1,6 @@
 # Customer Churn Prediction
 
-XGBoost churn model for telecom customers, served behind a FastAPI + Gradio app on AWS ECS Fargate. Built as a personal project to get an end-to-end ML system into production rather than just a notebook.
+XGBoost churn model for subscription-service customers, served behind a FastAPI + Gradio app on AWS ECS Fargate. Built as a personal project to get an end-to-end ML system into production rather than just a notebook.
 
 ## Analysis
 
@@ -25,7 +25,7 @@ Two analytical notebooks, written up as case studies rather than scratchpads:
 
 ## Stack
 
-- **Model**: XGBoost, trained on the public IBM Telco churn dataset
+- **Model**: XGBoost, trained on a public customer churn dataset (see `docs/data_card.md`)
 - **Tracking**: MLflow (file-based, runs stored under `mlruns/`)
 - **Validation**: Great Expectations on the raw input
 - **API**: FastAPI (`/predict`, `/`) + a Gradio UI mounted at `/ui`
