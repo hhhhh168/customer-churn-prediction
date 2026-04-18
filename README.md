@@ -30,6 +30,8 @@ Three notebooks, written up as case studies rather than scratchpads. They walk t
 
 **[Tableau Public dashboard](https://public.tableau.com/views/CustomerChurnPrediction_1/Dashboard?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)** — interactive version of the business analysis, built for stakeholder consumption. Segmentation charts cross-filter on click, and a budget parameter lets you adjust how many at-risk customers the retention team can reach.
 
+The methodology generalizes to any subscription or recurring-revenue retention problem — SaaS churn, neobank attrition, subscription-fintech app churn, B2B payment platform retention, membership businesses, and customer revenue analytics more broadly. The data here is public telco churn, but the segmentation axes, revenue-at-risk framing, and top-N outreach pipeline aren't telco-specific. `notebooks/01_business_analysis.ipynb` section 9 has a direct feature-by-feature mapping, and `notebooks/02_model_analysis.ipynb` section 5 includes an adverse-action-style reason-code treatment for regulated explainability contexts.
+
 ## Stack
 
 - **Model**: XGBoost, trained on a public customer churn dataset (see `docs/data_card.md`)
